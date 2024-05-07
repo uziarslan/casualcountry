@@ -1,0 +1,215 @@
+<%- include('../partials/headerhead') %>
+    <%- include('../partials/producthead') %>
+        <div>
+            <form class="row-product row-productAnother" action="/user/getQuotation/<%= product._id %>" method="POST">
+                <div class="col-2-product-row">
+
+                    <div class="col-2-product-small">
+                        <% product.images.forEach(image=> { %>
+                            <img src="<%= image.path %>" alt="<%= product.productTitle %>" class="product-small-image"
+                                onclick="switchImages(this)">
+                            <% }) %>
+                    </div>
+                    <div class="col-2-product-large">
+                        <% if (product.images.length) { %>
+                            <img src="<%= product.images[0].path %>" alt="<%= product.productTitle %>"
+                                class="product-large-image">
+                            <% } %>
+                    </div>
+                </div>
+                <div class="col-2-product">
+                    <div class="col-2-product-size">
+                        <h1>
+                            <%= product.productTitle %>
+                        </h1> <br>
+                        <p>
+                            <%= product.productDescription %>
+                        </p> <br>
+                        <hr> <br>
+                        <div class="cat">
+
+                            <div class="col-small-2">
+                                <ul>
+                                    <li class="justRow">
+                                        <span>Category</span>
+                                        <%= product.category %>
+                                    </li>
+                                    <li class="c-bar justRow" style="height: 30px !important;">
+                                        <span>Color</span>
+                                        <% product.color.map((c,i)=>{ %>
+                                            <div style="background-color: <%=c%>;" class="colorDisplay" id="demo<%=i%>"
+                                                onclick="colorvalue('<%=c%>', 'demo<%=i%>')"></div>
+                                            <%}) %>
+
+                                                <input name="color" required type="text" value="" id="silentInput"
+                                                    class="silentInput">
+
+                                    </li>
+                                    <li class="justRow" style="height: 30px !important;">
+                                        <span> Size</span>
+                                        <div class="s-bar">
+                                            <ul class="ull">
+                                                <% product.sizes.map((s,i)=>{ %>
+                                                    <li>
+                                                        <input type="checkbox" id="check_<%=i%>" name="size"
+                                                            value="<%=s%>">
+                                                        <label onclick="setinventory('<%=product.inventory[i]%>')"
+                                                            for="check_<%=i%>">
+                                                            <%=s%>
+                                                        </label>
+                                                    </li>
+                                                    <%}) %>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="justRow ">
+                                        <span>Quantity</span>
+                                        <div class="q-bar">
+
+                                            <label for="outofstock" id="outofstock" style="display: none;">Out of
+                                                Stock</label>
+                                            <button type="button" id="btn--" class="btn--" disabled
+                                                onclick="decrement()"><i class="fa fa-angle-left c"
+                                                    aria-hidden="true"></i></button>
+                                            <input class="inputquantity" onblur="valueCheck()" name="quantity" disabled
+                                                placeholder="" id="demoInput" type="number">
+                                            <button type="button" id="btn++" class="btn--" disabled
+                                                onclick="increment()"><i class="fa fa-angle-right c"
+                                                    aria-hidden="true"></i></button>
+                                        </div>
+                                    </li>
+
+
+
+                                </ul>
+
+                                <hr style="width: 100%;">
+
+                                <button class="btn-1" onclick="checkoption()" type="submit"> GET Quotation</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </form>
+        </div>
+
+
+        <div class="small-container small-containerAnother">
+            <h2 class="title">Related <span class="title-new">Products</span></h2>
+            <div class="row">
+
+                <!-- Swiper -->
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <% relatedProducts.forEach(product=> { %>
+                            <div class="swiper-slide" style="background-color: rgba(255, 0, 0, 0)">
+                                <a href="/user/product/<%= product._id %>">
+                                    <img class="image-slide" src="<%= product.images[0].path %>"
+                                        alt="<%= product.productTitle %>">
+                                    <h4>
+                                        <%= product.productTitle %>
+                                    </h4>
+                                </a>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+        <script>
+            function switchImages(img) {
+                const largeImage = document.querySelector('.product-large-image');
+                const smallImages = document.querySelectorAll('.product-small-image');
+                largeImage.src = img.src;
+                for (let i = 0; i < smallImages.length; i++) {
+                    if (smallImages[i] === img) {
+                        smallImages[i].classList.remove('active');
+                    } else {
+                        smallImages[i].classList.add('active');
+                    }
+                }
+            }
+            function checkoption(){
+                const input = document.getElementById("silentInput");
+                const inputElement = document.getElementById("demoInput");
+            if (input.value === "" || inputElement.value === "") {
+                event.preventDefault();
+                alert("Please Select Color or Quantity or Size.");
+            }
+            }
+           
+            function colorvalue(color1, id) {
+                document.getElementById("silentInput").setAttribute("value", color1);
+                let demo1 = document.querySelectorAll(".slectedcolor");
+                demo1.forEach((element, i) => {
+                    element.classList.remove("slectedcolor")
+                });
+
+                let color = document.getElementById(id).classList.add('slectedcolor');
+            }
+            var inputElement = document.getElementById("demoInput");
+            inputElement.min = 1;
+            function setinventory(countinventory) {
+                let input = document.getElementById("demoInput");
+                document.getElementById("demoInput").max = countinventory
+                if (countinventory == 0) {
+                    document.getElementById("btn--").disabled = true;
+                    document.getElementById("btn++").disabled = true;
+                    input.value = "";
+                    input.placeholder = "Out of Stock";
+
+                    input.disabled = true;
+
+                }
+                else {
+                    document.getElementById("btn--").disabled = false;
+                    document.getElementById("btn++").disabled = false;
+                    input.placeholder = "In Stock";
+                    input.disabled = false;
+                }
+
+            }
+            function valueCheck() {
+                let input = document.getElementById("demoInput");
+                var inputValue = parseFloat(inputElement.value); // Parse input value as a number
+                var maxValue = '<%=product.inventory%>'; // This assumes product.inventory holds the maximum value
+                if (maxValue == 0) {
+                    input.placeholder = "Out of Stock";
+                    input.disabled = true;
+                }
+                if (inputValue > maxValue) {
+                    inputElement.value = maxValue; // Set the input value to the maximum value
+                }
+                if (inputValue < 1) {
+                    inputElement.value = 1; // Set the input value to the maximum value
+                }
+
+            }
+            const checkboxes = document.querySelectorAll("input[type='checkbox']");
+            // When a checkbox is clicked, check it and uncheck all other checkboxes
+            checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener("click", () => {
+                    checkboxes.forEach((otherCheckbox) => {
+                        otherCheckbox.checked = false;
+
+                    });
+                    checkbox.checked = true;
+                    let input = document.getElementById("demoInput");
+                    input.value = "";
+
+
+
+                });
+            });
+        </script>
+        <%- include('../partials/headerbody') %>

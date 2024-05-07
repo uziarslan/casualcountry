@@ -1,0 +1,25 @@
+<!-- views/admin/login.ejs -->
+
+<%- include('../partials/loginhead') %>
+
+<div class="container1">
+    <div class="login form">
+        <p class="maintext"> User Login</p>
+
+        <%- include('../partials/flash') %>
+        <form action="/user/login" method="POST" class="mt-3">
+            <input type="text" placeholder="Enter your Email" id="username" name="username" required>
+            <div class="password-container">
+                <input type="password" placeholder="Enter your password" id="password" name="password" required>
+                <button type="button" id="togglePassword" class="toggle-password-button">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <p class="signup-link" style="color: white;">Don't have an account? <a style="color: rgba(0, 255, 76, 0.712);" href="/user/signup">Sign up</a></p>
+            <input type="submit" class="button" value="Login">
+        </form>
+
+        
+    </div>
+</div>
+<%- include('../partials/body') %>

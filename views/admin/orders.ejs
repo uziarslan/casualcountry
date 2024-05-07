@@ -1,0 +1,86 @@
+<%- include('../partials/head') %>
+
+    <!-- Topbar Start -->
+    <div class="container-fluid">
+        <p class="text-xl-center fa-2x pt-2"><strong>Welcome to Admin Panel</strong></p>
+        <%- include('../partials/flash') %>
+
+
+
+    </div>
+    <!-- Topbar End -->
+    
+    <!-- Navbar Start -->
+    <div class="container-fluid">
+      <div class="row border-top px-xl-5">
+          <div class="col-lg-3 d-none d-lg-block">
+
+              <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0"
+                  id="navbar-vertical">
+                  <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+
+                      <a href="/admin/category" class="nav-item nav-link">Categories</a>
+                      <a href="/admin/product" class="nav-item nav-link ">Products</a>
+                      <a href="/admin/new-arrivals" class="nav-item nav-link ">New Arrival</a>
+                      <a href="/admin/trendingproducts" class="nav-item nav-link">Trending</a>
+                      <a href="/admin/navbar" class="nav-item nav-link">Navbar</a>
+                      <a href="/admin/wholesaletabs" class="nav-item nav-link">WholeSale</a>
+                      <a href="/admin/quotations" class="nav-item nav-link bg-active">Orders</a>
+              
+                      <a href="/user/all" class="nav-item nav-link">Signup Record</a>
+
+                  </div>
+              </nav>
+          </div>
+          <div class="col-lg-9">
+           
+            
+          </div>
+      </div>
+  </div>
+  <!-- Navbar End -->
+
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/orders.css">
+
+<div class="orders"> 
+  <h2 class="title">Order Management</h2>
+  <h1>Orders</h1>
+  <ul>
+    <% quotations.forEach(quotation => { %>
+      <li>
+        <h2>Product: <%= quotation.product.productTitle %></h2>
+        <p><span>Color:</span> <%= quotation.color %></p>
+        <p><span>Size:</span> <%= quotation.size %></p>
+        <p><span>Quantity:</span> <%= quotation.quantity %></p>
+        <p><span>Quotation Date-Time:</span> <%= quotation.createdAt.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) %></p>
+          <% if (quotation.user) { %>
+            <p><span>Name:</span> <%= quotation.user.Firstname %> <%= quotation.user.Lastname %></p>
+            <p><span>Company Name:</span> <%= quotation.user.companyname %></p>
+            <p><span>Contact Number:</span> <%= quotation.user.phone %></p>
+            <p><span>Email:</span> <%= quotation.user.email %></p>
+          <% } %>
+          <hr>
+          <div class="rowclass">
+        <% if (quotation.status === 'Pending') { %>
+          <form class="order-action-form" action="/admin/quotations/<%= quotation._id %>/approve?_method=PUT" method="POST">
+            <label for="status">Status:</label>
+            <select name="status">
+              <option value="Pending" <%= quotation.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+              <option value="Approved" <%= quotation.status === 'Approved' ? 'selected' : '' %>>Approved</option>
+              <option value="Rejected" <%= quotation.status === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+            </select>
+            <button class="update-button" type="submit">Update</button>
+          </form>
+        <% } %>
+        <form class="order-action-form" action="/admin/quotations/delete/<%= quotation._id %>?_method=DELETE" method="POST">
+          <button class="delete-button" type="submit">Delete</button>
+        </form>
+      </div>
+       
+      </li>
+    <% }); %>
+  </ul>
+</div>
+
+<%- include('../partials/body') %>

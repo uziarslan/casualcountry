@@ -1,0 +1,65 @@
+/* orders.css */
+.orders {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    border: 1px solid #5bb653;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #ffffff;
+  }
+  
+  li h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  li p {
+    margin: 0.5rem 0;
+  }
+  
+  li span {
+    font-weight: bold;
+    color: #6f6f6f !important;
+  }
+  
+  li hr {
+    border: none;
+    border-top: 1px solid black;
+    margin: 1rem 0;
+  }
+  .rowclass{
+    display: flex;
+    flex-direction: row;
+  }
+  .update-button{
+    margin: 5px;
+    background-color: #5bb653;
+    color: white;
+    border: none;
+  }
+  .delete-button{
+    margin: 5px 5px 5px 130px;
+    
+    background-color: #bb2d3b;
+    color: white;
+    border: none;
+  }
+  
